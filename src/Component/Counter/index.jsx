@@ -1,9 +1,10 @@
 import React from 'react';
+import store from '../../reducer'
 
 class Counter extends React.Component {
     constructor(props) {
         super(props)
-        this.state={value:props.store.getState() , groupSize:0, store:props.store}
+        this.state={value:0 , groupSize:0}
     }
 
     onIncrease = () => {
@@ -12,6 +13,7 @@ class Counter extends React.Component {
             
         }));
         this.props.onIncrease()
+        store.dispatch({ type: 'INCREMENT' })
     }
 
     onDecrease = () => {
@@ -19,6 +21,7 @@ class Counter extends React.Component {
             value : prevState.value - 1
         }));
         this.props.onDecrease()
+        store.dispatch({ type: 'DECREMENT' })
     }
 
     static getDerivedStateFromProps(props,state) {
@@ -32,16 +35,11 @@ class Counter extends React.Component {
     }
 
     render() {
-        this.state.store.subscribe(() =>{
-            this.setState({
-                value:this.state.store.getState()
-            })
-        })
         return (
             <div>
-                <button onClick={() => this.state.store.dispatch({ type: 'DECREMENT' })}>-</button>
+                <button onClick={this.onDecrease}>-</button>
                 <mark>{this.state.value}</mark>
-                <button onClick={() => this.state.store.dispatch({ type: 'INCREMENT' })}>+</button>
+                <button onClick={this.onIncrease}>+</button>
             </div>
         );
     }
