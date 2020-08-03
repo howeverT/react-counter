@@ -3,7 +3,7 @@ import React from 'react';
 class Counter extends React.Component {
     constructor(props) {
         super(props)
-        this.state={value:0 , groupSize:0}
+        this.state={value:props.store.getState() , groupSize:0, store:props.store}
     }
 
     onIncrease = () => {
@@ -32,11 +32,16 @@ class Counter extends React.Component {
     }
 
     render() {
+        this.state.store.subscribe(() =>{
+            this.setState({
+                value:this.state.store.getState()
+            })
+        })
         return (
             <div>
-                <button onClick={this.onDecrease}>-</button>
+                <button onClick={() => this.state.store.dispatch({ type: 'DECREMENT' })}>-</button>
                 <mark>{this.state.value}</mark>
-                <button onClick={this.onIncrease}>+</button>
+                <button onClick={() => this.state.store.dispatch({ type: 'INCREMENT' })}>+</button>
             </div>
         );
     }
