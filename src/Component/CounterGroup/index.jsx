@@ -19,18 +19,6 @@ class CounterGroup extends React.Component {
         }
     }
 
-    // handleOnIncreate = () => {
-    //     this.setState((prevState) => ({
-    //         total: prevState.total + 1
-    //     }));
-    // }
-
-    // handleOnDecreate = () => {
-    //     this.setState((prevState) => ({
-    //         total: prevState.total - 1
-    //     }));
-    // }
-
     render() {
         const initArray = [...Array(this.state.size).keys()];
         store.subscribe(() => {
@@ -77,4 +65,3 @@ const mapDispatchToProps = dispatch => ({
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CounterGroup);
 
-// export default CounterGroup;
