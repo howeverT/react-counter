@@ -12,19 +12,21 @@ class Counter extends React.Component {
             value : prevState.value + 1,
             
         }));
-        this.props.onIncrease()
-        store.dispatch({ type: 'INCREMENT' })
+        // this.props.onIncrease()
+        //store.dispatch({ type: 'INCREMENT' })
+        this.props.increasement()
     }
 
     onDecrease = () => {
         this.setState((prevState) => ({
             value : prevState.value - 1
         }));
-        this.props.onDecrease()
-        store.dispatch({ type: 'DECREMENT' })
+        // this.props.onDecrease()
+        // store.dispatch({ type: 'DECREMENT' })
+        this.props.decreasement()
     }
 
-    static getDerivedStateFromProps(props,state) {
+    static getDerivedStateFromProps(props,state) {//TODO
         if(props.groupSize !== state.groupSize) {
             return {
                 value : 0,

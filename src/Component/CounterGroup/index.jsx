@@ -1,39 +1,41 @@
 import React from 'react';
 import Counter from '../Counter'
 import store from '../../reducer'
+import { connect } from 'react-redux';
 
 class CounterGroup extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {size:0, total:store.getState()};
+        this.state = { size: 0, total: props.sum };
     }
 
     handleResize = (event) => {
-        this.setState({
-            size: !event.target.value ? 0 : parseInt(event.target.value)>=0 ?  parseInt(event.target.value): 0,
-            total: 0
-        })
-        
+        if (this.state.size != event.target.value) {
+            this.setState({
+                size: !event.target.value ? 0 : parseInt(event.target.value) >= 0 ? parseInt(event.target.value) : 0
+            })
+            this.props.init()
+        }
     }
 
-    handleOnIncreate = () => {
-        this.setState((prevState) => ({
-            total : prevState.total + 1
-        }));
-    }
+    // handleOnIncreate = () => {
+    //     this.setState((prevState) => ({
+    //         total: prevState.total + 1
+    //     }));
+    // }
 
-    handleOnDecreate = () =>{
-        this.setState((prevState) => ({
-            total : prevState.total - 1
-        }));
-    }
+    // handleOnDecreate = () => {
+    //     this.setState((prevState) => ({
+    //         total: prevState.total - 1
+    //     }));
+    // }
 
     render() {
         const initArray = [...Array(this.state.size).keys()];
-        store.subscribe(() =>{
+        store.subscribe(() => {
             this.setState({
-                value:store.getState()
+                value: store.getState()
             })
         })
         return (
@@ -43,15 +45,36 @@ class CounterGroup extends React.Component {
                     <input onBlur={this.handleResize} defaultValue={0}></input>
                 </label><br></br>
                 <label>
-                    Total Number: {this.state.total}
+                    Total Number: {this.props.sum}
                 </label>
-                    {
-                        initArray.map(key => <Counter onIncrease={this.handleOnIncreate} onDecrease={this.handleOnDecreate} key = {key} groupSize={this.state.size} 
-                        />)
-                    }
+                {
+                    initArray.map(key => <Counter
+                        key={key}
+                        groupSize={this.state.size}
+                        increasement={this.props.increasement}
+                        decreasement={this.props.decreasement}
+                    />)
+                }
             </div>
         );
     }
 }
 
-export default CounterGroup;
+const mapStateToProps = state => {
+    return { sum: state }
+};
+
+const mapDispatchToProps = dispatch => ({
+    increasement: () => dispatch({
+        type: 'INCREMENT'
+    }),
+    decreasement: () => dispatch({
+        type: 'DECREMENT'
+    }),
+    init: () => dispatch({
+        type: 'INIT'
+    })
+});
+export default connect(mapStateToProps, mapDispatchToProps)(CounterGroup);
+
+// export default CounterGroup;
