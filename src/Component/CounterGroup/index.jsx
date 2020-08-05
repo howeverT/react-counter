@@ -1,6 +1,5 @@
 import React from 'react';
 import Counter from '../Counter'
-import store from '../../reducer'
 import { connect } from 'react-redux';
 
 class CounterGroup extends React.Component {
@@ -21,11 +20,6 @@ class CounterGroup extends React.Component {
 
     render() {
         const initArray = [...Array(this.state.size).keys()];
-        store.subscribe(() => {
-            this.setState({
-                value: store.getState()
-            })
-        })
         return (
             <div>
                 <label>
